@@ -50,6 +50,10 @@ $ gcloud config set compute/zone us-central1-c
 ```
 Once you've initialized, you should be able to run `gcloud config list` and see the project, region, and zone configured in the output.
 
+### MHN-Admin Deployment (Required)
+
+**Summary:** 
+
 ## Milestone 1: Create MHN Admin VM
 
 Start by creating the MHN Admin VM via your cloud provider. The VM needs to have an internet-facing IP and accessible to you via ssh (or a similar protocol). As specified above, you can use a small or micro-sized VM for this, but the following attributes are required:
@@ -233,24 +237,3 @@ When I finished the assignment the first time - the next day I was unable to acc
 I deleted my honeypots in hope that it was causing too much traffic which was why I was receiving a gateway error. However, that did not fix the problem and I redid the entire project. I was able to successfully ping to the IP for mhn-admin but was unable to ssh into the mhn-admin VM. Therefore I had to recreate the mhn-admin VMs in addition to the honeypot VMs.
 
 
-### MHN-Admin Deployment (Required)
-
-**Summary:** 
-Start by creating the MHN Admin VM via your cloud provider. The VM needs to have an internet-facing IP and accessible to you via ssh (or a similar protocol). As specified above, you can use a small or micro-sized VM for this, but the following attributes are required:
-
-* Ubuntu 14.04 (trusty)
-* HTTP traffic allowed (port 80)
-* TCP ports 3000 and 10000 need to be open to allow incoming (aka 'ingress') traffic That last requirement is generally the only one that may require a specific firewall rule to configure properly, because those ports are non-standard and specific to MHN. Some cloud providers may require you to create the firewall rules separately and then apply them to the VM. Either way, make sure when you create the VM that you can access it via SSH.
-
-<img src="mhn-admin.gif">
-
-GCP Users
-
-First, create a firewall rule to allow ingress traffic on TCP ports 3000 and 10000. The following command can be used to do this via the command line:
-
-
-This will prompt you to install the beta SDK; after doing so, the command should complete successfully. You can verify the mhn-allow-admin rule was created via the browser by looking at the VPC Network Firewall Ingress Rules. Next, create the VM itself, which we'll call mhn-admin:
-
-Note the tags value, which controls the applicable firewall rules. The output should show both internal and external IP addresses...make note of the external IP:
-<img src="mhn-admin.gif">
-Finally, establish SSH access to the VM via gcloud compute ssh mhn-admin (which is similar to ssh). You'll be asked to add the fingerprint the first time you connect, and you'll see the Ubuntu welcome message and a command prompt.
