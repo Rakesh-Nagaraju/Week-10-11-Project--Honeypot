@@ -63,7 +63,7 @@ Start by creating the MHN Admin VM via your cloud provider. The VM needs to have
 That last requirement is generally the only one that may require a specific firewall rule to configure properly, because those ports are non-standard and specific to MHN. Some cloud providers may require you to create the firewall rules separately and then apply them to the VM. Either way, make sure when you create the VM that you can access it via SSH.
 
 **Final Firewall Rules**
-![alt test](https://imgur.com/EupyMv2.png)
+<img src="https://github.com/Rakesh-Nagaraju/Weeks-10-11-Project--Honeypot/blob/main/1.png" width=250> <br>
 
 **GCP Users**
 
