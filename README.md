@@ -63,7 +63,10 @@ Start by creating the MHN Admin VM via your cloud provider. The VM needs to have
 That last requirement is generally the only one that may require a specific firewall rule to configure properly, because those ports are non-standard and specific to MHN. Some cloud providers may require you to create the firewall rules separately and then apply them to the VM. Either way, make sure when you create the VM that you can access it via SSH.
 
 **Final Firewall Rules**
-<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/1.png" width=250> <br>
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/1.png"> 
+
+<br>
+<br>
 
 **GCP Users**
 
@@ -78,7 +81,7 @@ $ gcloud compute instances create "mhn-admin" --machine-type "f1-micro" --subnet
 ```
 Note the `tags` value, which controls the applicable firewall rules. The output should show both internal and external IP addresses...make note of the external IP:
 
-![alt test](https://imgur.com/0fHUIjE.png)
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/2.png">
  
 Finally, establish SSH access to the VM via `gcloud compute ssh mhn-admin` (which is similar to ssh). You'll be asked to add the fingerprint the first time you connect, and you'll see the Ubuntu welcome message and a command prompt.
 
@@ -126,7 +129,8 @@ Now you should be able to load the external IP in a browser and login to the adm
 
 ***Encountered problems logging into the admin console. Had to edit settings for mhn-admin on GCP VM Instances to allow http/https traffic. Also had trouble accessing mhn-admin webpage since it uses http instead of https so the URL would be: http://35.225.22.169/ instead of https://35.225.22.169/***
 
-![alt test](https://imgur.com/NyxTId2.png)
+
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/3.png">
  
 ## Milestone 3: Create a MHN Honeypot VM 
 
@@ -163,14 +167,16 @@ gcloud compute instances create "mhn-honeypot-1" --machine-type "f1-micro" --sub
 gcloud compute instances create "mhn-honeypot-2" --machine-type "f1-micro" --subnet "default" --maintenance-policy "MIGRATE"  --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring.write","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" --tags "mhn-honeypot","http-server" --image "ubuntu-1404-trusty-v20171010" --image-project "ubuntu-os-cloud" --boot-disk-size "10" --boot-disk-type "pd-standard" --boot-disk-device-name "mhn-honeypot-2"
 ```
 **All VM's Created with IP Listed**
- ![alt test](https://imgur.com/zsZwuL0.png)
+
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/4.png">
  
 ## Milestone 4: Install the Honeypot Application
 After having established SSH access the new honeypot VM, we need to install the honeypot application into the VM and wire it to connect back to the admin server. Fortunately, MHN makes this fairly straightforward. First, in the MHN admin console in your browser, click on Deploy in the top nav, and you'll be asked to select a script. Choose Ubuntu - Dionaea with HTTP, and you'll see a Deploy Command appear with a full deployment script below it. You can ignore the script, which is just for reference, but make a note of the Deploy Command, which is the one-line command you'll need to execute inside the honeypot VM you connected to in the last step.
 
 So, copy the command from the browser page. It should start with wget and end with a unique token string. Execute this command inside the honeypot VM to install the Dionaea software. It shouldn't take more than a few minutes to complete. When it's done, click back over to the MHN admin console in your browser. From the top nav, choose Sensors >> View sensors and you should see the new honeypot listed.
 
-![alt test](https://imgur.com/LjcqVkY.png)
+
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/5.png">
 
 1.	Deploy Command – Ubuntu – Dionaea with HTTP
 ```
@@ -188,8 +194,9 @@ wget "http://104.154.221.36/api/script/?text=true&script_id=6" -O deploy.sh && s
 ## Milestone 5: Attack!
 Now for the fun part: let's attack the honeypot to make sure it's all working. You can use nmap and pass it the IP of the honeypot VM (not the IP of the MHN admin VM):
  
- ![alt test](https://imgur.com/GwkYqSn.png)
- ![alt test](https://imgur.com/2T5DUUj.png)
+
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/6.png">
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/7.png">
  
 It should show ports open...these are the services Dionaea is using to attract attackers. Switch back to the MHN Admin console in your browser, and from the top nav, choose Attacks. If everything goes well, you should see your IP address listed with several port scan records. This means the honeypot intercepted your attack.
 
@@ -197,11 +204,13 @@ You may, however, see other attacks as well, from other IPs. In fact, it shouldn
 
 **Repeat process for the second honeypot.**
 
-![alt test](https://imgur.com/wqJal8a.png)
-![alt test](https://imgur.com/5LuFQlH.png)
+
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/8.png">
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/9.png">
 
 ## Summary of Attacks
-![alt type](https://imgur.com/F8pO6oG.png)
+
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/10.png">
 **Encountered problems viewing the attacks report even though it was visible on the map. Had to research and restart Mnemosyne in order to make it visible but for some reason after restarting it stopped showing the attacks on the map**
 
 *Commands to restart Mnemosyne:*
@@ -212,7 +221,8 @@ rakenju@mhn-admin:~$ sudo supervisorctl status
 ```
 Map showing where attacks are coming from:
 
-![alt test](https://imgur.com/KAprQhh.png)
+
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/11.png">
 
 ### Database Backup (Required) 
 ## Exporting Data
@@ -221,7 +231,8 @@ The submission for this assignment will require an export of the data collected 
 **GCP Users**
 
 You can do the export directly from your local machine in two steps, so run the following commands on your local machine.
- ![alt test](https://imgur.com/XYcUlNJ.png)
+
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/12.png">
  
 The session.json file should be downloaded successfully.
 
@@ -233,7 +244,8 @@ When the assignment is complete, you'll most likely want to remove the VMs creat
 ## NOTE
 This project took decent amount of time to complete (15 hours). 
 When I finished the assignment the first time - the next day I was unable to access my mhn-admin webpage due to a gateway error. 
-![alt type](https://imgur.com/DW4jOz6.png)
+
+<img src="https://github.com/Rakesh-Nagaraju/Week-10-11-Project--Honeypot/blob/main/13.png">
 I deleted my honeypots in hope that it was causing too much traffic which was why I was receiving a gateway error. However, that did not fix the problem and I redid the entire project. I was able to successfully ping to the IP for mhn-admin but was unable to ssh into the mhn-admin VM. Therefore I had to recreate the mhn-admin VMs in addition to the honeypot VMs.
 
 
